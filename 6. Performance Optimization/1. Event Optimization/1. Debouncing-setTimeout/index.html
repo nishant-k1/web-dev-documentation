@@ -1,0 +1,26 @@
+<input
+  type="text"
+  name="search"
+  placeholder="Type Something..."
+  class="search-input"
+/>
+
+<script>
+  const inputHandler = (event) => {
+    console.log(event.target.value);
+  };
+
+  // HOF
+  const withDebounce = (eventHandler, delay) => {
+    let timeOutId;
+    return (event) => {
+      clearTimeout(timeOutId);
+      timeOutId = setTimeout(() => {
+        eventHandler(event);
+      }, delay);
+    };
+  };
+
+  const element = document.querySelector(".search-input");
+  element.addEventListener("input", withDebounce(inputHandler, 3000));
+</script>

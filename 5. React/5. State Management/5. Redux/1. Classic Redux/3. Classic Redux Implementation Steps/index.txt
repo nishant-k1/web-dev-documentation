@@ -1,0 +1,76 @@
+Step1:  inside the index.js file ----
+            
+    Step1: import { Provider } from 'react-redux' in you index.js file 
+
+    Step2: import { store } from '~/state/store' in you index.js file 
+
+    Step3: make the App component children of the Provider component and pass store as props to the Provider component. 
+        <Provider store = {store}>
+            <App />
+        </Provider>
+
+Step3:  create a folder called redux or state or features under the src folder of the react app. Now inside state folder ---
+
+    Step1:  create a store.js file 
+
+    Step2:  create a componentSlice.js file for the component whose state you want to make globally available. eg: headerSlice.js for the Header component 
+
+Step4:  inside the store.js file ----
+    Step1:  import { createStore, combineReducers, applyMiddleware, compose } from 'redux' 
+
+    Step2:  import ReduxThunk from 'redux-thunk'
+
+    Step3:  import componentSlice.js from the './componentSlice.js' to get to the access to the reducer of the component whose state you want to make globally available.
+
+    Step4:  create a reducers object and pass it as an argument to the combineReducers()
+                Eg: const reducers = {reducer1: reducer1, reducer2: reducer2, ...}
+                    combineReducers(reducers)
+
+    Step5:  create a rootReducer variable and assign it combineReducers(reducers)
+                Eg: const rootReducer = combineReducers(reducers)
+
+    Step6:  create a middlewares variable and assign it composeEnhancers (applyMiddleware(ReduxThunk))
+                Eg: const middlewares = composeEnhancers (applyMiddleware(ReduxThunk))
+
+    Step7:  create a store variable and assign createStore (rootReducer, middlewares)
+                Eg: const store = createStore (rootReducer, middlewares)
+
+    Step8:  export the store variable
+                Eg: export default store 
+
+Step5: inside the componentSlice.js file create a reducer function that takes previous state and action object as argument and returns a new state based on the type condition.
+
+    Eg: headerReducer = (state = 0, {type, payload}) => {
+        switch(type){
+            case 'TYPE_A':
+                return newState,
+            case 'TYPE_B':
+                return newState,
+            default:
+                return state
+        }
+    }
+
+Step6: inside the components where we want to use the state of that component---
+
+    Step1: import { useSelector, useDispatch } from 'react-redux'
+
+        useSelector
+            1. useSelector is a redux hook whose return value is the current state (of the component whose state you want to make available globally). 
+            2. It takes in a function as an argument .
+            3. This argument function has a single parameter which receives the value of the rootReducer object from the store.
+            4. Now, you have the access to the rootReducer object, you can get the access to all the reducers(which is nothing but the newState returned by the respective reducer function)
+            
+            Eg: const state = useSelector(state => state)
+
+        useDispatch 
+            1. useDispatch is redux-hook whose return value is a function
+            2. this returned function on call takes in action object as its argument. 
+            3. action object has only two properties, type and payload 
+
+                const action = {type: 'SOME_TYPE', payload: 'SOME_PAYLOAD'}
+                Eg: const dispatch = useDispatch()
+                    dispatch({type: 'SOME_TYPE', payload: 'SOME_PAYLOAD'})
+
+            3. this action passed as an argument, is received in the 2nd parameter of the reducer function of component (whose state you want to make available globally). 
+            4. Now you can manipulate the payload and create and return a new state for the component (whose state you want to make available globally). 

@@ -1,0 +1,21 @@
+# ES6 Features
+
+- **Lexical Block Scoping (let, const)**
+- **Arrow Functions**
+- **Destructuring Assignment**
+- **Default Parameters**
+- **Rest Parameters**
+- **Spread Operator**
+- **Computed Property Names**
+- **Templates**
+- **Classes**
+- **Modules**
+- **Iterators and Generators**
+- **Promises**
+- **Map, Set, and WeakMap**
+- **Reflect API**
+- **Number Methods**
+- **String Methods**
+- **Symbol**
+- **Array Methods**
+- **Object Methods**

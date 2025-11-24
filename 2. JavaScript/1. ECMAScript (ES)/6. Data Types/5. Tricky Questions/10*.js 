@@ -1,0 +1,33 @@
+for (var i = 0; i < 3; i++) {
+  setTimeout(() => console.log(i), 1000);
+}
+
+// by the time the setTimeout functions actually execute after 1000 milliseconds, the loop has already finished.
+// The value of i at the end of the loop is 3.
+// Therefore, all three setTimeout functions will log the value of i which is now 3.
+
+// # To fix the above code using closures or let
+
+// Using Closures
+for (var i = 0; i < 3; i++) {
+  (function (localI) {
+    setTimeout(() => console.log(localI), 1000);
+  })(i);
+}
+
+// IFE (Immediately Invoked Function Expression):
+// (function(localI) { ... })(i); creates a new scope for each iteration of the loop.
+// localI within the IIFE receives the current value of i from the loop.
+// Closure:
+// The setTimeout function within the IIFE "closes over" the localI variable.
+// This means that even after the loop finishes and i changes, the localI variable within each IIFE retains its original value.
+
+// Using let
+
+for (let i = 0; i < 3; i++) {
+  setTimeout(() => console.log(i), 1000);
+}
+
+// let creates a new block-scoped variable for each iteration of the loop.
+// This means that each iteration has its own independent i variable.
+// When the setTimeout function executes, it accesses the correct i variable from its respective iteration.

@@ -1,0 +1,7 @@
+INTERFACES : custom type or specific structure to objects / functions 
+
+interface and types are almost same. interface could be preferred over type in case of objects.
+
+Difference between interface and type 
+    type can be used with primitives and unions but Interface can't be used with primitive and unions.
+    interface should be preferred over types for describing objects.

@@ -1,0 +1,48 @@
+# Media Events
+
+Media events are triggered by actions involving media elements such as `<audio>`, `<video>`, or other media sources.
+
+## Common Media Events
+
+- `play`
+- `pause`
+- `ended`
+- `volumechange`
+- `timeupdate`
+- `seeking`
+- `seeked`
+- `loadeddata`
+- `loadedmetadata`
+- `canplay`
+- `canplaythrough`
+- `stalled`
+- `error`
+
+## Properties (Common to All Media Events)
+
+- **target**: The media element (e.g., `<audio>`, `<video>`) that triggered the event.
+- **currentTime**: The current playback position of the media in seconds.
+- **duration**: The total duration of the media in seconds.
+- **paused**: A boolean indicating whether the media is paused.
+- **volume**: The current volume level of the media (range 0.0 to 1.0).
+- **muted**: A boolean indicating whether the media is muted.
+- **readyState**: The current readiness of the media. Possible values:
+  - `0`: HAVE_NOTHING
+  - `1`: HAVE_METADATA
+  - `2`: HAVE_CURRENT_DATA
+  - `3`: HAVE_FUTURE_DATA
+  - `4`: HAVE_ENOUGH_DATA
+- **buffered**: A `TimeRanges` object representing the portion of the media that has been buffered.
+
+## Methods (Common to All Media Events)
+
+- **preventDefault()**: Prevents the default action associated with the event (e.g., preventing auto-play or stopping media from buffering).
+- **stopPropagation()**: Prevents the event from propagating (bubbling) up the DOM.
+- **stopImmediatePropagation()**: Prevents the event from propagating and stops other listeners on the same event from being triggered.
+
+## Media Event-Specific Methods
+
+- **play()**: Starts playback of the media (if not already playing).
+- **pause()**: Pauses the playback of the media.
+- **load()**: Loads the media (for resetting the media element or reloading its source).
+- **seekTo(time)**: Seeks to a specific time in the media.

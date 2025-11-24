@@ -1,0 +1,170 @@
+# Memory Leaks
+
+- Overuse of heap causes memory leak.
+- A memory leak occurs when a program retains memory that is no longer needed, preventing it from being reclaimed by the garbage collector.
+- In JavaScript, this typically happens in the heap, where objects and data are dynamically allocated.
+
+```Javascript
+ const array = [];
+ for (var i = 5; i > 1; i++){ // infinite loop
+    array.push(i-1); // requires infinite memory causing filling up all the available memory while garbage collection isn't working since there's no memory without any reference.
+ }
+```
+
+- Common Causes of Memory Leaks in the Heap:
+  1. Global Variables
+  2. Uncleared Timers or Callbacks
+  3. Detached DOM Elements
+  4. Closures
+  5. Circular References
+  6. Over-Retaining Data Structures
+
+## Three common memory leaks
+
+1. Global Variables
+
+   - If we keep adding global variables especially deply nested objects then it can cause memory leaks
+
+   - Variables declared without let, const, or var implicitly attach to the global object (window in browsers, global in Node.js), making them persist for the lifetime of the program.
+
+   ```javascript
+   var a = 1;
+   var b = 1;
+   var c = 1;
+
+   myLeakedVar = "I'm a memory leak!"; // Implicit global
+   ```
+
+2. Uncleared Timers or Callbacks
+
+   ```javascript
+   let element = document.getElementById("myElement");
+   setInterval(() => {
+     console.log(element); // Reference to `element` prevents GC
+   }, 1000);
+   ```
+
+3. Event listeners
+   If we keep adding new event listeners (without removing them when we don't need them) then it can cause memory leaks
+
+   ```javascript
+   var element = document.getElementById('button';
+   element.addEventListener('click', onClick));
+   element.removeEventListener('click', onClick));
+   ```
+
+4. Detached DOM Elements
+   Removing DOM elements without clearing references to them can lead to leaks
+
+   ```javascript
+   let button = document.getElementById("myButton");
+   button.addEventListener("click", () => {
+     console.log("Button clicked!");
+   });
+   document.body.removeChild(button); // Event listener still holds reference
+   ```
+
+5. Closures
+   Closures can inadvertently keep references to variables even after they’re no longer needed.
+
+   ```javascript
+   function outer() {
+     let largeArray = new Array(1000000);
+     return function inner() {
+       console.log(largeArray); // `largeArray` is retained in memory
+     };
+   }
+   ```
+
+6. Circular References
+   When two objects reference each other, it can confuse the garbage collector.
+
+   ```JavaScript
+      let objA = {};
+      let objB = {};
+      objA.ref = objB;
+      objB.ref = objA;
+   ```
+
+7. Over-Retaining Data Structures
+   Retaining too much data in arrays, maps, or sets can lead to unintended memory growth.
+
+   ```JavaScript
+   let cache = [];
+   function addToCache(item) {
+    cache.push(item); // Old items are never removed
+   }
+   ```
+
+## Debugging Memory Leaks
+
+1. Browser Developer Tools (Chrome, Firefox, etc.):
+
+   - Use the Memory tab to take heap snapshots and analyze retained objects.
+   - Look for "detached" or long-lived objects that should have been garbage collected.
+
+2. Performance Profiling Tools:
+
+   - Use tools like Chrome DevTools Profiler to monitor memory usage over time.
+   - Look for a consistently growing memory graph, which could indicate a leak.
+
+3. Libraries:
+   - Use libraries like Memory Leak Finder or why-did-you-render (for React apps).
+
+## How to Prevent Memory Leaks
+
+1. Avoid Implicit Globals
+
+   ```JavaScript
+   let safeVar = "I won't leak!";
+   ```
+
+2. Clean Up Event Listeners and Timers
+
+   ```JavaScript
+      let button = document.getElementById('myButton');
+      function onClick() {
+         console.log('Clicked!');
+      }
+      button.addEventListener('click', onClick);
+      button.removeEventListener('click', onClick); // Cleanup
+   ```
+
+3. Use WeakMaps and WeakSets
+
+   ```JavaScript
+      let weakMap = new WeakMap();
+      let obj = {};
+      weakMap.set(obj, 'data'); // Automatically removed when `obj` is unreachable
+   ```
+
+4. Avoid Circular References
+
+   ```JavaScript
+      objA.ref = null;
+      objB.ref = null;
+   ```
+
+5. Use Closures Carefully
+
+   ```JavaScript
+      function safeOuter() {
+         let largeArray = new Array(1000000);
+         return function safeInner() {
+            console.log('No reference to largeArray!');
+         };
+      }
+   ```
+
+6. Monitor Memory Usage
+
+   Regularly check for growing memory usage during development and testing.
+   Use heap snapshots to confirm objects are being properly garbage-collected.
+
+## Best Practices
+
+1. `Keep Your Code Modular`: Break down large components into smaller, manageable pieces.
+2. `Use Tools`: Use developer tools to test and monitor memory usage regularly.
+3. `Nullify References`: Explicitly set references to null when no longer needed.
+4. `Use Modern Patterns`: Leverage WeakMap, WeakSet, and const to better manage memory.
+5. `Profile and Optimize`: Use profilers and debug tools to identify leaks before they become a problem.

@@ -1,0 +1,26 @@
+# Focus Events
+
+Focus events are triggered when an element gains or loses focus, typically used with form elements like input fields, textareas, and select elements.
+
+## Common Focus Events
+
+- `focus`
+- `blur`
+- `focusin` (bubbles)
+- `focusout` (bubbles)
+
+## Properties (Common to All Focus Events)
+
+- **target**: The element that triggered the event.
+- **relatedTarget**: The element that the focus is moving to or from (only for `focusout` and `blur` events).
+
+## Methods (Common to All Focus Events)
+
+- **preventDefault()**: Prevents the default action associated with the event (e.g., preventing focus change in certain cases).
+- **stopPropagation()**: Prevents the event from propagating (bubbling) up the DOM.
+- **stopImmediatePropagation()**: Prevents the event from propagating and stops other listeners on the same event from being triggered.
+
+## Focus Event-Specific Methods
+
+- **focus()**: Programmatically focuses an element (e.g., calling this on an input element will set focus to it).
+- **blur()**: Programmatically removes focus from an element (e.g., calling this on an input element will remove focus from it).

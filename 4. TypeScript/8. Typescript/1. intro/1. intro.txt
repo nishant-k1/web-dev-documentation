@@ -1,0 +1,38 @@
+Dynamically typed language
+__________________________
+    The types are associated with run-time values and not named explictly in your code.
+    Eg: javascript, python, Ruby, php
+
+
+Statically typed language
+__________________________
+    You explictly assign types to variables, function parameters, return values etc.
+    Eg: Java, C, C++, Rust, Go 
+
+    Main reason to use typescript over javascript is to add static types to javascript.
+
+
+Compiling typescript 
+_____________________ 
+    typescript uses .ts and .tsx extensions 
+    TSC (Typescript Compiler) is used to compile .ts files down to JS 
+    Can watch files and report errors at compile time
+    many tools include TS compilation by default 
+    tsconfig.json file is used to configure how Typescript works
+
+
+install Typescript Compiler(TSC)
+________________________________ 
+    sudo npm i -g typescript
+
+to compile ts file 
+_________________ 
+    command: npx tsc
+    command: npx tsc --watch
+
+to setup typescript config file 
+_______________________________ 
+    tsc --init
+
+to setup typescript directory
+_____________________________ 

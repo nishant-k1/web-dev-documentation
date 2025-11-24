@@ -1,0 +1,295 @@
+# Classic Redux Terminologies
+
+1. **UI** - To display the state on the screen.
+
+2. **Dispatch**
+
+   1. Whenever any event or action is performed on the UI which would require change/update in the state then we invoke the `dispatch(actionObj)` method provided by the redux library.
+   2. `dispatch(action)` is a store method, that lets the UI trigger actions.
+   3. The redux library provides `useDispatch` hook which on invocation returns the dispatch method. `useDispatch()` hook returns the reference to the store dispatch method. We can import the `useDispatch` hook from the `redux`.
+   4. By default, we can only pass `action` object to dispatch as an argument. But if we use middleware like `redux-thunk`, we can also pass the `thunk function` reference to the dispatch.
+   5. If you don't use any middleware, then, passing reference to any function will throw error.
+
+      ```js
+      dispatch(() => {}); // ❌ Will throw error: actions must be plain objects
+      ```
+
+   6. dispatch is a `Redux store method` used to send `actions` to the Redux `store` via `reducers`.
+   7. dispatch Sends an action to the Redux store to update the state `via reducers`. (Not mutate, but update)
+   8. Is a `store method`, that lets the UI trigger actions.
+   9. It’s the only way to trigger a state change in Redux.
+   10. Syntax: `dispatch(arg);` here the value of arg can be
+
+       1. **action** object
+       2. **thunk** function (when using redux thunk middleware)
+
+   11. WHERE CAN we USE dispatch and how can we access it ?
+
+       1. **Inside React Components** → useDispatch();
+
+          ```js
+          const dispatch = useDispatch();
+          dispatch(increment());
+          ```
+
+       2. **Outside React Components** → store.dispatch()
+
+          ```js
+          //  store.dispatch()
+          import store from "./store";
+          store.dispatch(increment());
+          ```
+
+          ```js
+          // param of thunk function receives reference to the dispatch
+          // Thunk Creator Function
+          const fetchUser = (userId) => {
+            // Thunk Function
+            return async (dispatch) => {
+              dispatch({ type: "user/fetchStart" });
+              try {
+                const response = await fetch(`/api/users/${userId}`);
+                const data = await response.json();
+                dispatch({ type: "user/fetchSuccess", payload: data });
+              } catch (error) {
+                dispatch({ type: "user/fetchError", payload: error.message });
+              }
+            };
+          };
+          ```
+
+3. **Action**
+
+   - An action is a plain JavaScript object that has a `type` and `payload` as properties.
+   - In Redux, an action is a plain JavaScript object that describes an event that happened in the application.
+   - Think of it as a messenger that carries information from your app to the Redux store.
+   - Structure of an Action Object. `{type, payload?, meta?, error?}`. It has 4 properties, `type` is required, `payload`, `meta`, `error` are optional.
+
+     1. `type` (Required)
+
+        - A string constant that identifies the type of action.
+        - Must be unique across the app.
+        - Example: 'INCREMENT_COUNTER'
+
+     2. `payload` (Optional)
+
+        - The data you want to send with the action.
+        - Could be a number, string, object, array—anything.
+        - Example: { value: 5 }
+
+     3. `meta` (Optional)
+
+        - Any extra metadata, not meant for the reducer but maybe for middleware (e.g., logging, analytics).
+
+     4. `error` (Optional)
+
+        - Boolean flag to indicate if this is an error action (used by libraries like redux-observable or redux-promise-middleware).
+
+     ```js
+        {
+          type: 'ACTION_TYPE',
+          payload: optionalData,
+          meta: optionalMetadata,
+          error: optionalBoolean
+        }
+
+        // Example
+        const action = {
+          type: 'ADD_TODO',
+          payload: {
+            id: 1,
+            text: 'Learn Redux'
+          }
+        };
+     ```
+
+4. ## **Action Creator function**: Pure Function
+
+   - This function returns the `action` object when invoked.
+   - The invoked value of this function is passed in dispatch function as an argument, eg: `dispatch(actionCreatorFunction())`. Here, actionCreatorFunction() returns the `action` object, i.e. `{type: '', payload: ""}`
+   - An action creator function can't be asynchronous or impure, i.e. it can't perform any side effects like api calls or console logs etc, or modifying any external data.
+   - This function does not have the access to the current state.
+   - We use it only when the value of the action object/payload is synchronously available.
+   - Action Creator Function is Not used when the value of the action object/payload is asynchronous.
+
+5. **Redux Middlewares**
+
+   1. **`Redux Thunk`: Thunk Creator Function and Thunk Function**
+
+   - We use `redux-thunk` middleware when the value of the `action` object or `payload` is asynchronously available.
+   - `Thunk Creator Function` is used in place of the `Action Creator Function` when using `redux-thunk` middleware.
+
+   1. **Thunk Creator Function**
+
+      1. When we use this `redux-thunk` middleware then instead of the Action Creator Function, we use `Thunk Creator Function`, which is a HOF, i.e. it returns another Function (instead of any action object unlike action creator function), this another function is called the `thunk function`.
+
+      2. When `Thunk Creator Function` is invoked value of this function, which is the reference to the `thunk function` is passed to the `dispatch` function as an argument, eg: `dispatch(thunkCreatorFunction())`. Here, thunkCreatorFunction() returns reference to the `thunk function` .
+
+   2. **Thunk Function**
+
+      - The `Thunk Creator Function` returns the `thunk function`
+      - `Thunk function` receives the `dispatch` and `getState` methods in its parameter. Thus thunk function has access to the dispatch and getState methods via its params.
+      - `Thunk` Function can be `asynchronous` and `impure` and has access to `dispatch` and `getState` methods from its params, unlike the action creator function.
+      - We can perform, side effects like api calls and console logs etc.
+      - After manipulation in the action object we again call `dispatch` method inside this function and pass the `action` object with payload (which is received after the asynchronous operations) to the dispatch as an argument.
+
+      ```js
+      // Thunk Creator Function
+      const fetchUser = (userId) => {
+        // Thunk Function
+        return async (dispatch) => {
+          dispatch({ type: "user/fetchStart" });
+          try {
+            const response = await fetch(`/api/users/${userId}`);
+            const data = await response.json();
+            dispatch({ type: "user/fetchSuccess", payload: data });
+          } catch (error) {
+            dispatch({ type: "user/fetchError", payload: error.message });
+          }
+        };
+      };
+      ```
+
+   3. **Redux Saga**
+
+      - NO IDEA YET
+
+   4. **redux-persist**: Saving state across page reloads or sessions.
+
+6. **Reducer**: Pure Functions
+   `Object Mutation`: Any change is made directly to the original object or its nested properties, altering its structure or values.
+
+   1. When the dispatch method is invoked the action object passed to it is received in the 2nd param of the reducer function which is a pure function.
+   2. The reducer function has only two params: 1. `state`, 2. `action`
+   3. In redux we can't mutate the state but we can pass new reference to the state.
+   4. Whenever a property value in the state needs to be updated, we create a shallow copy of the existing state object using the spread operator (...) or Object.assign(). This ensures immutability, meaning we don't directly modify the original state. We then override the specific property we want to update by assigning it a new value in the copied object. Finally, we return this updated object, which replaces the previous state in the store or component.
+   5. The reducer function returns the the reference to the new state. (reference of the internal properties are changed, the state is not mutated)
+   6. syntax: `(state=initialState, action) => state`
+   7. Takes state + action and returns new Updated state (new reference, not mutation)
+   8. A reducer is a pure function that receives the initial state and an action object, decides how to update the state if necessary, and returns the new state.
+   9. It has access to the current state and the action object after the dispatch.
+   10. Reference to the state is updated not the values are mutated.
+
+   FAQ: We override the value of the property which needs to be update in the shallow copy of the new state object. Does this not cause mutation to our shallow copy of the state object?
+
+   Overriding a property in the shallow copy is not considered a mutation of the original object — it's a mutation of the new copy, which is exactly what we want. So, yes we're mutating the shallow copy. Overriding any property with new value is definitely mutation. But that does not mutate our original state, it mutates the shallow copied state and the reference to this already mutated shallow copied state is returned as the new state.
+
+7. **Store** - The current redux application/global state/application state lives in an object called the store.
+
+   **Store Methods​**
+
+   1. getState(): returns​ the current state tree of your application.
+   2. dispatch(action): lets the UI trigger actions.
+   3. subscribe(listener)
+   4. replaceReducer(nextReducer)
+
+8. **Selector**: `useSelector(selectorCallBackFn)`
+
+   - like `useDispatch` hook, `useSelector` hook can be imported from the `redux` library.
+   - It is a HOF, during invocation, a reference to the callback function is passed to it is as the first argument, called `selectorFunction`.
+   - During invocation, `useSelector` hook, can receive two arguments. 1. `selectorCallBackFn`, 2. `shallowEqual`
+
+     1. **selectorFunction**:
+
+        1. The `selectorFunction` receives the redux `state` in its param. Thus it has access to the current redux state.
+        2. This function has only one param, `state`.
+        3. Syntax: `(state) => state.someFeatureSlice.someValue`
+        4. It returns the part of the state we need.
+        5. **Selector Function Best Practices:**
+
+           1. Select Only What You Need. Why? Selecting too much state causes your component to re-render even for unrelated changes elsewhere in the store.
+
+              ```js
+              //❌ Don’t:
+              const state = useSelector((state) => state); // selects the entire store
+
+              //✅ Do:
+              const username = useSelector((state) => state.user.name);
+              ```
+
+           2. Avoid Creating New Objects in Selectors
+
+              ```js
+              //❌ Don’t (always returns a new object):
+              const userInfo = useSelector((state) => ({
+                name: state.user.name,
+                email: state.user.email,
+              }));
+
+              // ✅ Do:
+              const name = useSelector((state) => state.user.name);
+              const email = useSelector((state) => state.user.email);
+              ```
+
+           3. Extract Selectors Into a Separate File, Keep selectors reusable and maintainable:
+
+              ```js
+              // selectors/userSelectors.js
+              export const selectUserName = (state) => state.user.name;
+
+              // Then in your component:
+              import { selectUserName } from "../selectors/userSelectors";
+              const username = useSelector(selectUserName);
+              ```
+
+           4. Use `shallowEqual` When Selecting Multiple Values, this prevents unnecessary re-renders when only unrelated keys change.
+
+              ```js
+              import { shallowEqual, useSelector } from "react-redux";
+
+              const { name, age } = useSelector(
+                (state) => ({ name: state.user.name, age: state.user.age }),
+                shallowEqual
+              );
+              ```
+
+           5. Keep Selectors Pure
+
+        | Practice                                  | Benefit                                    |
+        | ----------------------------------------- | ------------------------------------------ |
+        | Select only required state                | Prevents unnecessary re-renders            |
+        | Avoid object creation in selector         | Avoids new reference on each render        |
+        | Use memoized selectors                    | Optimizes derived data performance         |
+        | Externalize selectors                     | Improves modularity and testability        |
+        | Use shallowEqual when needed              | Prevents re-renders for same-value objects |
+        | Create custom hooks like `useAppSelector` | Type-safe and DRY                          |
+        | Keep selectors pure                       | Consistent, predictable behavior           |
+
+     2. **shallowEqual**:
+        1. useSelector avoids unnecessary re-renders using reference equality or shallow equality.
+        2. If you are selecting objects/arrays, use shallowEqual to prevent unnecessary renders.
+
+   - `useSelector` hook returns exactly the same value which is returned by its callback `selectorFunction`.
+   - `useSelector` hook subscribes the react `component` (inside which the useSelector hook has been used) to the Redux store. When the selected state (value returned by the `useSelector`) changes, the component re-renders.
+   - If you are selecting objects/arrays, use `shallowEqual` to prevent unnecessary renders.
+   - Redux uses shallow comparison, === (reference check) by default to detect changes. For objects/arrays, use shallowEqual if needed.
+   - `useSelector` only works inside React function components or custom hooks.
+
+   - Syntax:
+
+     ```js
+      // redux store
+     {
+       user: { name: 'Nishant', age: 25 },
+       theme: 'dark'
+     }
+
+     import { useSelector, shallowEqual } from 'react-redux';
+
+     const UserProfile = () => {
+       const name = useSelector((state) => state.user.name);
+
+       return <div>Hello, {name}!</div>;
+     };
+
+     ```
+
+   - If your selector returns a primitive (like a string or number), React-Redux compares it with the previous return value using ===.
+   - If it returns an object or array, and you return a new object each time, the reference changes — causing unnecessary re-renders.
+   - Whatever the selectorFunction returns, useSelector returns that same value — and uses it to determine whether the component should re-render.
+
+## Principles of Redux
+
+- `Single source of truth`: The global state of your application is stored in an object tree within a single store
+- `State is read-only`: The only way to change the state is to emit an action, an object describing what happened.
+- `Changes are made with pure functions`: To specify how the state tree is transformed by actions, you write pure reducers.

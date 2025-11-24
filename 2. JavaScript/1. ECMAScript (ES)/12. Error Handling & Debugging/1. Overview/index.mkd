@@ -1,0 +1,7 @@
+# Error in javascript
+
+- Now `errors`, or what others may call `exceptions` in programming is seldomly taught topic.
+- Errors aren't a mistake but rather a feature there for handling error is important.
+- Just letting error go through isn't often the best you can do. Sometimes it is unavoidable such as syntax error or reference errors.
+- Unhandling exectptions like these is a goog way to see that a program is broken. But a better way to think about errors is that expecting these errors to happen during runtime and handling them correctly is a better strategy than having these unexpected things happen. So try to handle errors to the best of your ability. It's unavoidable that some of them will pass throught and you won't be able to catch everything.
+- By using these ability to catch errors, you can perhaps make errors fail gracefully so that you have control over what your program does thus making our code more predictable.

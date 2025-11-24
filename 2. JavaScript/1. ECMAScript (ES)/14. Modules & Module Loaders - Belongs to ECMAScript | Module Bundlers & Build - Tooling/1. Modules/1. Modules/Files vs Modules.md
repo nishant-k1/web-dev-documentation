@@ -1,0 +1,91 @@
+# Files vs Modules
+
+## JavaScript File
+
+- A JavaScript file (like script.js) is a plain script — it runs in the global scope by default.
+- Example: Regular JavaScript file
+
+  ```js
+  // script.js
+  let message = "Hello World";
+  console.log(message);
+  ```
+
+  ```js
+  // If you include this in HTML:
+  <script src="script.js"></script>
+  ```
+
+- Variables like message become global, accessible by other scripts.
+- Script execution order depends on how they are included in HTML (top to bottom).
+- There’s no module isolation — everything shares the same global scope.
+
+## Module File
+
+- A module is also a JavaScript file — but one that runs in its own private scope and can export/import values.
+- Example
+
+  <!-- math.js -->
+
+  ```js
+  export function add(a, b) {
+    return a + b;
+  }
+  ```
+
+  <!-- main.js -->
+
+  ```js
+  import { add } from "./math.js";
+  console.log(add(2, 3)); // 5
+  ```
+
+  <!-- In HTML: -->
+
+  ```js
+  <script type="module" src="main.js"></script>
+  ```
+
+- Scoped: Variables are not added to the global scope.
+- Imports/Exports: You can import from and export to other modules.
+- Strict Mode by Default: Automatically uses "use strict".
+- Deferred Execution: Modules act like scripts with defer — they wait until the DOM is parsed.
+- Can use top-level await (unlike regular scripts).
+
+## Js File vs Js Module
+
+| Feature                    | Regular JS File                   | Module                                          |
+| -------------------------- | --------------------------------- | ----------------------------------------------- |
+| Scope                      | Global                            | Module (private)                                |
+| Variable pollution         | Yes                               | No                                              |
+| Strict mode                | Optional                          | Default                                         |
+| Import/Export              | ❌ Not supported                  | ✅ Supported                                    |
+| Execution                  | Immediately (in order)            | Deferred                                        |
+| Top-level `await`          | ❌                                | ✅                                              |
+| Included using             | `<script src="file.js"></script>` | `<script type="module" src="file.js"></script>` |
+| Access to global variables | Shared                            | Isolated                                        |
+| Best for                   | Simple scripts                    | Scalable, maintainable codebases                |
+
+| Action                     | Normal JS (`normal.js`)        | Module (`module.js`)          |
+| -------------------------- | ------------------------------ | ----------------------------- |
+| Variable scope             | Global — accessible everywhere | Local — isolated to that file |
+| `window.sayHello`          | ✅ Exists                      | ❌ Undefined                  |
+| Use of `export` / `import` | ❌ Error                       | ✅ Works                      |
+| Strict mode                | ❌ Optional                    | ✅ Always On                  |
+| Top-level `await`          | ❌ Not allowed                 | ✅ Allowed                    |
+
+| Concept        | Normal JS File                    | JS Module                                       |
+| -------------- | --------------------------------- | ----------------------------------------------- |
+| How to include | `<script src="file.js"></script>` | `<script type="module" src="file.js"></script>` |
+| Global scope   | Yes                               | No                                              |
+| import/export  | ❌ Not allowed                    | ✅ Allowed                                      |
+| Strict mode    | Optional                          | Always on                                       |
+| Use case       | Simple script                     | Reusable / structured app                       |
+
+**If you try to use import or export in a normal script, you’ll get this error:**
+
+```js
+Uncaught SyntaxError: Cannot use import statement outside a module
+```
+
+That’s because you didn’t declare it with type="module".

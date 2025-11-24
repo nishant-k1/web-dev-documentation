@@ -1,0 +1,613 @@
+# `useCallback` Hook
+
+## TL;DR
+- Memoizes functions between re-renders
+- Returns same function reference until dependencies change
+- Prevents unnecessary child re-renders
+- Use with React.memo for optimization
+- Syntactic sugar for `useMemo(() => fn, deps)`
+
+## What is `useCallback`?
+
+`useCallback` is a React Hook that lets you cache a function definition between re-renders. It returns a memoized version of the callback that only changes if dependencies change.
+
+```jsx
+const memoizedCallback = useCallback(
+  () => {
+    doSomething(a, b);
+  },
+  [a, b] // Dependencies
+);
+```
+
+## Why useCallback?
+
+### Problem: Functions are recreated every render
+
+```jsx
+function Parent() {
+  const [count, setCount] = useState(0);
+  
+  // ❌ New function every render
+  const handleClick = () => {
+    console.log('clicked');
+  };
+  
+  return (
+    <div>
+      <button onClick={() => setCount(count + 1)}>Re-render Parent</button>
+      <Child onClick={handleClick} />
+    </div>
+  );
+}
+
+const Child = React.memo(({ onClick }) => {
+  console.log('Child rendered'); // Logs on every Parent render!
+  return <button onClick={onClick}>Click me</button>;
+});
+```
+
+### Solution: useCallback preserves function reference
+
+```jsx
+function Parent() {
+  const [count, setCount] = useState(0);
+  
+  // ✅ Same function reference across renders
+  const handleClick = useCallback(() => {
+    console.log('clicked');
+  }, []); // Empty deps = never changes
+  
+  return (
+    <div>
+      <button onClick={() => setCount(count + 1)}>Re-render Parent</button>
+      <Child onClick={handleClick} />
+    </div>
+  );
+}
+
+const Child = React.memo(({ onClick }) => {
+  console.log('Child rendered'); // Only logs once!
+  return <button onClick={onClick}>Click me</button>;
+});
+```
+
+## Basic Usage
+
+### Simple Callback
+
+```jsx
+function Component() {
+  const [count, setCount] = useState(0);
+  
+  const increment = useCallback(() => {
+    setCount(c => c + 1);
+  }, []); // No dependencies needed with functional update
+  
+  return <button onClick={increment}>Count: {count}</button>;
+}
+```
+
+### Callback with Dependencies
+
+```jsx
+function SearchComponent({ onSearch }) {
+  const [query, setQuery] = useState('');
+  const [filter, setFilter] = useState('all');
+  
+  // Recreated only when query or filter changes
+  const handleSearch = useCallback(() => {
+    onSearch(query, filter);
+  }, [query, filter, onSearch]);
+  
+  return (
+    <div>
+      <input value={query} onChange={e => setQuery(e.target.value)} />
+      <select value={filter} onChange={e => setFilter(e.target.value)}>
+        <option value="all">All</option>
+        <option value="active">Active</option>
+      </select>
+      <button onClick={handleSearch}>Search</button>
+    </div>
+  );
+}
+```
+
+## Real-World Examples
+
+### Example 1: Optimized List with Actions
+
+```jsx
+function TodoList({ todos }) {
+  const [items, setItems] = useState(todos);
+  
+  // ✅ Memoized - won't cause TodoItem re-renders
+  const handleToggle = useCallback((id) => {
+    setItems(items => 
+      items.map(item => 
+        item.id === id ? { ...item, done: !item.done } : item
+      )
+    );
+  }, []); // No dependencies with functional update
+  
+  const handleDelete = useCallback((id) => {
+    setItems(items => items.filter(item => item.id !== id));
+  }, []);
+  
+  const handleEdit = useCallback((id, newText) => {
+    setItems(items =>
+      items.map(item =>
+        item.id === id ? { ...item, text: newText } : item
+      )
+    );
+  }, []);
+  
+  return (
+    <ul>
+      {items.map(item => (
+        <TodoItem
+          key={item.id}
+          item={item}
+          onToggle={handleToggle}
+          onDelete={handleDelete}
+          onEdit={handleEdit}
+        />
+      ))}
+    </ul>
+  );
+}
+
+const TodoItem = React.memo(({ item, onToggle, onDelete, onEdit }) => {
+  console.log('TodoItem rendered:', item.id);
+  
+  return (
+    <li>
+      <input
+        type="checkbox"
+        checked={item.done}
+        onChange={() => onToggle(item.id)}
+      />
+      <span>{item.text}</span>
+      <button onClick={() => onDelete(item.id)}>Delete</button>
+      <button onClick={() => onEdit(item.id, prompt('New text:'))}>
+        Edit
+      </button>
+    </li>
+  );
+});
+```
+
+### Example 2: Form Handlers
+
+```jsx
+function UserForm({ initialUser, onSave }) {
+  const [user, setUser] = useState(initialUser);
+  const [errors, setErrors] = useState({});
+  
+  const handleNameChange = useCallback((e) => {
+    setUser(prev => ({ ...prev, name: e.target.value }));
+  }, []);
+  
+  const handleEmailChange = useCallback((e) => {
+    setUser(prev => ({ ...prev, email: e.target.value }));
+  }, []);
+  
+  const validate = useCallback(() => {
+    const newErrors = {};
+    if (!user.name) newErrors.name = 'Name required';
+    if (!user.email) newErrors.email = 'Email required';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }, [user]);
+  
+  const handleSubmit = useCallback((e) => {
+    e.preventDefault();
+    if (validate()) {
+      onSave(user);
+    }
+  }, [user, validate, onSave]);
+  
+  return (
+    <form onSubmit={handleSubmit}>
+      <Input
+        label="Name"
+        value={user.name}
+        onChange={handleNameChange}
+        error={errors.name}
+      />
+      <Input
+        label="Email"
+        value={user.email}
+        onChange={handleEmailChange}
+        error={errors.email}
+      />
+      <button type="submit">Save</button>
+    </form>
+  );
+}
+
+const Input = React.memo(({ label, value, onChange, error }) => {
+  console.log(`Input "${label}" rendered`);
+  return (
+    <div>
+      <label>{label}</label>
+      <input value={value} onChange={onChange} />
+      {error && <span className="error">{error}</span>}
+    </div>
+  );
+});
+```
+
+### Example 3: Debounced Search
+
+```jsx
+function SearchBox({ onSearch }) {
+  const [query, setQuery] = useState('');
+  
+  // Debounced search function
+  const debouncedSearch = useCallback(
+    debounce((searchTerm) => {
+      onSearch(searchTerm);
+    }, 500),
+    [onSearch]
+  );
+  
+  const handleChange = useCallback((e) => {
+    const value = e.target.value;
+    setQuery(value);
+    debouncedSearch(value);
+  }, [debouncedSearch]);
+  
+  return (
+    <input
+      type="text"
+      value={query}
+      onChange={handleChange}
+      placeholder="Search..."
+    />
+  );
+}
+
+// Debounce utility
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  };
+}
+```
+
+### Example 4: Event Handlers with Context
+
+```jsx
+function DataGrid({ data }) {
+  const [selectedIds, setSelectedIds] = useState(new Set());
+  
+  const handleSelect = useCallback((id) => {
+    setSelectedIds(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
+  }, []);
+  
+  const handleSelectAll = useCallback(() => {
+    setSelectedIds(new Set(data.map(item => item.id)));
+  }, [data]);
+  
+  const handleDeselectAll = useCallback(() => {
+    setSelectedIds(new Set());
+  }, []);
+  
+  return (
+    <div>
+      <div>
+        <button onClick={handleSelectAll}>Select All</button>
+        <button onClick={handleDeselectAll}>Deselect All</button>
+      </div>
+      <table>
+        <tbody>
+          {data.map(item => (
+            <DataRow
+              key={item.id}
+              item={item}
+              selected={selectedIds.has(item.id)}
+              onSelect={handleSelect}
+            />
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+const DataRow = React.memo(({ item, selected, onSelect }) => {
+  return (
+    <tr onClick={() => onSelect(item.id)} className={selected ? 'selected' : ''}>
+      <td>{item.name}</td>
+      <td>{item.value}</td>
+    </tr>
+  );
+});
+```
+
+## useCallback vs useMemo
+
+### They're related!
+
+```jsx
+// These are equivalent:
+const memoizedCallback = useCallback(fn, deps);
+const memoizedCallback = useMemo(() => fn, deps);
+```
+
+### When to use which?
+
+```jsx
+function Component() {
+  // ✅ useCallback for functions
+  const handleClick = useCallback(() => {
+    console.log('clicked');
+  }, []);
+  
+  // ✅ useMemo for values
+  const expensiveValue = useMemo(() => {
+    return calculateExpensive(data);
+  }, [data]);
+  
+  return (
+    <Child onClick={handleClick} data={expensiveValue} />
+  );
+}
+```
+
+## Common Patterns
+
+### Pattern 1: Callback with Functional Updates
+
+```jsx
+function Counter() {
+  const [count, setCount] = useState(0);
+  
+  // ✅ No dependencies needed
+  const increment = useCallback(() => {
+    setCount(c => c + 1); // Functional update
+  }, []);
+  
+  const decrement = useCallback(() => {
+    setCount(c => c - 1);
+  }, []);
+  
+  return (
+    <div>
+      <CountDisplay count={count} />
+      <Controls onIncrement={increment} onDecrement={decrement} />
+    </div>
+  );
+}
+```
+
+### Pattern 2: Passing Callbacks Down Multiple Levels
+
+```jsx
+function GrandParent() {
+  const [data, setData] = useState([]);
+  
+  // ✅ Stable reference through component tree
+  const handleUpdate = useCallback((id, value) => {
+    setData(prev => 
+      prev.map(item => item.id === id ? { ...item, value } : item)
+    );
+  }, []);
+  
+  return <Parent onUpdate={handleUpdate} />;
+}
+
+function Parent({ onUpdate }) {
+  return <Child onUpdate={onUpdate} />;
+}
+
+const Child = React.memo(({ onUpdate }) => {
+  return <button onClick={() => onUpdate(1, 'new')}>Update</button>;
+});
+```
+
+### Pattern 3: Combining with useEffect
+
+```jsx
+function DataFetcher({ userId }) {
+  const [data, setData] = useState(null);
+  
+  // ✅ Memoized fetch function
+  const fetchData = useCallback(async () => {
+    const response = await fetch(`/api/users/${userId}`);
+    const result = await response.json();
+    setData(result);
+  }, [userId]);
+  
+  // ✅ Can safely use in useEffect
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]); // Won't cause infinite loop
+  
+  return <div>{data?.name}</div>;
+}
+```
+
+## Common Interview Questions
+
+### Q1: Do you always need useCallback?
+
+**Answer:** No! Only use when:
+1. Passing callback to memoized child (React.memo)
+2. Callback is dependency of useEffect/useMemo
+3. Expensive function creation
+
+```jsx
+// ❌ Unnecessary - simple onClick
+<button onClick={() => console.log('hi')}>Click</button>
+
+// ✅ Necessary - passed to memoized child
+const MemoChild = React.memo(Child);
+<MemoChild onClick={useCallback(() => {}, [])} />
+```
+
+### Q2: What happens if dependencies are missing?
+
+**Answer:** Stale closures - callback captures old values:
+
+```jsx
+function Component() {
+  const [count, setCount] = useState(0);
+  
+  // ❌ WRONG - count is stale
+  const handleClick = useCallback(() => {
+    console.log(count); // Always logs 0
+  }, []); // Missing count dependency
+  
+  // ✅ CORRECT
+  const handleClick = useCallback(() => {
+    console.log(count);
+  }, [count]);
+}
+```
+
+### Q3: useCallback with props as dependencies?
+
+**Answer:** Yes, include prop functions in dependencies:
+
+```jsx
+function Child({ onSave }) {
+  const [data, setData] = useState({});
+  
+  // ✅ Include onSave in deps
+  const handleSubmit = useCallback(() => {
+    onSave(data);
+  }, [data, onSave]); // Include prop function
+  
+  return <button onClick={handleSubmit}>Save</button>;
+}
+```
+
+### Q4: Does useCallback prevent all re-renders?
+
+**Answer:** No! Only prevents re-renders of memoized children. Parent re-renders normally.
+
+```jsx
+function Parent() {
+  const [count, setCount] = useState(0);
+  const handleClick = useCallback(() => {}, []);
+  
+  // Parent still re-renders on count change
+  return <MemoChild onClick={handleClick} />;
+}
+```
+
+### Q5: Performance cost of useCallback itself?
+
+**Answer:** useCallback has overhead. Only worth it for:
+- Expensive function creation
+- Functions passed to memoized components
+- Functions used in useEffect dependencies
+
+## Common Pitfalls & Gotchas
+
+### 1. **Using useCallback without React.memo**
+
+```jsx
+// ❌ POINTLESS - Child not memoized
+function Parent() {
+  const handleClick = useCallback(() => {}, []);
+  return <Child onClick={handleClick} />; // Child re-renders anyway
+}
+
+// ✅ USEFUL - Child is memoized
+function Parent() {
+  const handleClick = useCallback(() => {}, []);
+  return <MemoChild onClick={handleClick} />; // Child skips render
+}
+
+const MemoChild = React.memo(Child);
+```
+
+### 2. **Over-Memoization**
+
+```jsx
+// ❌ BAD - memoizing everything
+function Component() {
+  const a = useCallback(() => {}, []);
+  const b = useCallback(() => {}, []);
+  const c = useCallback(() => {}, []);
+  const d = useCallback(() => {}, []);
+  // Overhead > benefit if not needed
+}
+```
+
+### 3. **Missing Dependencies**
+
+```jsx
+function Component({ userId }) {
+  const [data, setData] = useState(null);
+  
+  // ❌ WRONG - userId missing
+  const fetchData = useCallback(async () => {
+    const res = await fetch(`/api/${userId}`);
+    setData(await res.json());
+  }, []); // Won't re-fetch on userId change!
+  
+  // ✅ CORRECT
+  const fetchData = useCallback(async () => {
+    const res = await fetch(`/api/${userId}`);
+    setData(await res.json());
+  }, [userId]);
+}
+```
+
+### 4. **Inline Function in JSX**
+
+```jsx
+// ❌ WRONG - defeats purpose of useCallback
+const handleClick = useCallback(() => doSomething(), []);
+return <button onClick={() => handleClick()}>Click</button>; // New function!
+
+// ✅ CORRECT
+return <button onClick={handleClick}>Click</button>;
+```
+
+## Best Practices
+
+1. **Use with React.memo** - otherwise pointless for child re-renders
+2. **Include all dependencies** - use ESLint plugin
+3. **Use functional updates** - reduce dependencies
+4. **Profile before optimizing** - measure actual impact
+5. **Don't over-optimize** - simple cases don't need it
+6. **Combine with useMemo** for complete optimization
+
+## When to Use `useCallback`
+
+✅ **Use when:**
+- Passing function to memoized child component
+- Function is used in useEffect/useMemo dependencies
+- Expensive function creation (rare)
+- Preventing unnecessary effect runs
+
+❌ **Don't use when:**
+- Simple event handlers not passed as props
+- Child components not memoized
+- Function not used in dependencies
+- "Just in case" optimization
+
+## Related Concepts
+
+- **React.memo**: Memoize components (required for useCallback to help)
+- **useMemo**: Memoize values instead of functions
+- **useEffect**: Often uses useCallback functions as dependencies
+- **React DevTools Profiler**: Measure optimization impact
+
+
+

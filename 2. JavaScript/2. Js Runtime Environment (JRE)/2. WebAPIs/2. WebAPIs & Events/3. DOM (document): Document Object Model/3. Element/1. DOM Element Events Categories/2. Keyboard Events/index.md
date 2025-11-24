@@ -1,0 +1,27 @@
+# Keyboard Events
+
+Keyboard events are triggered by actions involving the keyboard, such as pressing or releasing keys.
+
+## Common Keyboard Events
+
+- `keydown`
+- `keypress` (deprecated, use `keydown` or `keyup` instead)
+- `keyup`
+
+## Properties (Common to All Keyboard Events)
+
+- **target**: The element that triggered the event.
+- **key**: The value of the key pressed (e.g., `'Enter'`, `'a'`, `'Shift'`).
+- **code**: The physical key on the keyboard (e.g., `'KeyA'`, `'Space'`).
+- **altKey**: A boolean indicating whether the `Alt` key was pressed during the event.
+- **ctrlKey**: A boolean indicating whether the `Ctrl` key was pressed during the event.
+- **shiftKey**: A boolean indicating whether the `Shift` key was pressed during the event.
+- **metaKey**: A boolean indicating whether the `Meta` key (e.g., `Cmd` on macOS) was pressed during the event.
+- **location**: The location of the key on the keyboard (e.g., 0 for standard keys, 1 for left-side keys, 2 for right-side keys).
+- **repeat**: A boolean indicating whether the key is being held down and is repeating (for events like `keydown`).
+
+## Methods (Common to All Keyboard Events)
+
+- **preventDefault()**: Prevents the default action associated with the key event (e.g., preventing the form submission on pressing `Enter`).
+- **stopPropagation()**: Prevents the event from bubbling up through the DOM.
+- **stopImmediatePropagation()**: Prevents the event from bubbling and stops other listeners on the same event from being triggered.

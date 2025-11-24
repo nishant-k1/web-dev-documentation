@@ -1,0 +1,27 @@
+<input
+  type="text"
+  name="search"
+  placeholder="Type Something..."
+  class="search-input"
+/>
+
+<script>
+  const inputHandler = (event) => {
+    console.log(event.target.value);
+  };
+
+  // HOF
+  const withThrottle = (eventHandler, delay) => {
+    let lastExecuted = 0;
+    return (event) => {
+      const now = Date.now(); //  This returns the current timestamp in milliseconds since the Unix Epoch (i.e., since January 1, 1970, 00:00:00 UTC).
+      if (now - lastExecuted >= delay) {
+        lastExecuted = now;
+        eventHandler(event);
+      }
+    };
+  };
+
+  const element = document.querySelector(".search-input");
+  element.addEventListener("input", withThrottle(inputHandler, 3000));
+</script>

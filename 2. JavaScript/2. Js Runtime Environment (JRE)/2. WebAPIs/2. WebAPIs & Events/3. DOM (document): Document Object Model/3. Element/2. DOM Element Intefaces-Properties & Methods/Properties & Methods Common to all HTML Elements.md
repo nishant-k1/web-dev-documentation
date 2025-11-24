@@ -1,0 +1,134 @@
+# DOM Element Properties and Methods (Common to All HTML Elements via `HTMLElement`)
+
+## **Properties of Element**
+
+### **Core Properties**
+
+- **`id`** – Gets or sets the element's `id` attribute.
+- **`className`** – Gets or sets the element's `class` attribute.
+- **`tagName`** – Returns the element's tag name (in uppercase, read-only).
+- **`nodeName`** – Similar to `tagName`, returns the node's name (read-only).
+- **`nodeType`** – Returns the type of the node (e.g., `1` for elements).
+
+### **Content Properties**
+
+- **`innerHTML`** – Gets or sets the HTML content of the element.
+- **`outerHTML`** – Gets or sets the entire HTML, including the element itself.
+- **`innerText`** – Gets or sets visible text of the element.
+- **`textContent`** – Gets or sets the text content (ignores visibility).
+
+### **Attribute Properties**
+
+- **`attributes`** – Returns a live collection of all attributes.
+- **`dataset`** – Accesses custom `data-*` attributes as a `DOMStringMap`.
+
+### **Class and Style Properties**
+
+- **`classList`** – Provides a list of classes with methods for manipulation.
+- **`style`** – Accesses or modifies inline styles as a `CSSStyleDeclaration` object.
+
+### **Position & Size Properties**
+
+- **`offsetHeight`** – Element's height, including padding and border (read-only).
+- **`offsetWidth`** – Element's width, including padding and border (read-only).
+- **`offsetTop`** – Distance from the top of the offset parent (read-only).
+- **`offsetLeft`** – Distance from the left of the offset parent (read-only).
+- **`clientHeight`** – Height, including padding but excluding borders and scrollbars.
+- **`clientWidth`** – Width, including padding but excluding borders and scrollbars.
+- **`scrollHeight`** – Total height of the element's content (includes overflow).
+- **`scrollWidth`** – Total width of the element's content (includes overflow).
+- **`scrollTop`** – Vertical scroll position of the element.
+- **`scrollLeft`** – Horizontal scroll position of the element.
+
+### **Hierarchy Properties**
+
+- **`parentNode`** – The node's parent (can be any Node type).
+- **`parentElement`** – The element's parent (returns null if parent is not an Element).
+- **`childNodes`** – A live NodeList of all child nodes.
+- **`children`** – A live HTMLCollection of child elements.
+- **`firstChild`** – The first child node (can be any Node type).
+- **`lastChild`** – The last child node (can be any Node type).
+- **`firstElementChild`** – The first child that is an element.
+- **`lastElementChild`** – The last child that is an element.
+- **`nextSibling`** – The next sibling node (can be any Node type).
+- **`previousSibling`** – The previous sibling node.
+- **`nextElementSibling`** – The next sibling that is an element.
+- **`previousElementSibling`** – The previous sibling that is an element.
+
+---
+
+## **Methods of Element**
+
+### **Finding and Matching Elements**
+
+- **`querySelector(selector)`** – Returns the first element matching the CSS selector(s).
+- **`querySelectorAll(selector)`** – Returns a NodeList of all elements matching the CSS selector(s).
+- **`matches(selector)`** – Checks if the element matches the specified CSS selector.
+- **`closest(selector)`** – Returns the closest ancestor element (including itself) matching the selector.
+
+### **Attribute Methods**
+
+- **`getAttribute(name)`** – Gets the value of a specified attribute.
+- **`setAttribute(name, value)`** – Sets the value of an attribute.
+- **`removeAttribute(name)`** – Removes a specified attribute.
+- **`hasAttribute(name)`** – Checks if the attribute exists.
+- **`getAttributeNames()`** – Returns an array of all attribute names.
+
+### **Class Manipulation Methods**
+
+- **`classList.add(className, ...)`** – Adds one or more classes to the element.
+- **`classList.remove(className, ...)`** – Removes one or more classes.
+- **`classList.contains(className)`** – Checks if the element contains a specific class.
+- **`classList.toggle(className, force?)`** – Toggles a class (optional force parameter).
+- **`classList.replace(oldClass, newClass)`** – Replaces an existing class with another.
+
+### **Content Manipulation Methods**
+
+- **`insertAdjacentHTML(position, html)`** – Parses HTML and inserts it at the specified position.
+  - Positions: `"beforebegin"`, `"afterbegin"`, `"beforeend"`, `"afterend"`.
+- **`normalize()`** – Merges adjacent text nodes into a single text node.
+
+### **Adding, Removing, and Replacing Nodes**
+
+- **`appendChild(node)`** – Adds a node as the last child of the element.
+- **`removeChild(node)`** – Removes a specified child node from the element.
+- **`replaceChild(newNode, oldNode)`** – Replaces an old child node with a new node.
+- **`insertBefore(newNode, referenceNode)`** – Inserts a new node before a reference node.
+- **`append(...nodesOrStrings)`** – Appends one or more nodes or strings as children.
+- **`prepend(...nodesOrStrings)`** – Prepends one or more nodes or strings as children.
+- **`remove()`** – Removes the element from the DOM (modern method).
+- **`cloneNode(deep?)`** – Creates a copy of the element. If `deep` is `true`, it copies all child nodes.
+
+### **Event Handling**
+
+- **`addEventListener(eventType, callback, options?)`** – Attaches an event listener to the element.
+- **`removeEventListener(eventType, callback, options?)`** – Removes a previously attached event listener.
+- **`dispatchEvent(event)`** – Dispatches a custom event on the element.
+
+### **Position and Scrolling**
+
+- **`getBoundingClientRect()`** – Returns the size and position of the element relative to the viewport.
+- **`scrollIntoView(options?)`** – Scrolls the element into view (with optional alignment).
+- **`focus()`** – Sets focus on the element.
+- **`blur()`** – Removes focus from the element.
+
+### **Shadow DOM**
+
+- **`attachShadow(options)`** – Creates and attaches a shadow root to the element.
+- **`shadowRoot`** – Accesses the shadow root of the element.
+
+---
+
+## Example Usage
+
+```javascript
+// Accessing properties
+const element = document.getElementById("example");
+console.log(element.id); // Gets the ID
+element.innerHTML = "Hello, DOM!"; // Updates the content
+
+// Using methods
+element.setAttribute("data-role", "user");
+element.classList.add("highlight");
+element.scrollIntoView({ behavior: "smooth" });
+```

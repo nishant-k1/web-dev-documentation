@@ -1,0 +1,1 @@
+Generics are basically used for building reusable components 

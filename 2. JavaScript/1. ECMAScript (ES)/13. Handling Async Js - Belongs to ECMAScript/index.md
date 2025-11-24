@@ -1,0 +1,12 @@
+# Handling Async Js
+
+Async JS concepts like the event loop, task queues, microtasks, and how asynchronous callbacks are managed belong to the runtime environment (e.g., browser or Node.js).
+
+The language features to work with async code, such as Promises, async/await syntax, and Promise methods (then, catch, finally) are part of ECMAScript itself.
+
+| Concept                         | ECMAScript (Core JS)          | Runtime Environment (Advanced JS) |
+| ------------------------------- | ----------------------------- | --------------------------------- |
+| Promises, async/await syntax    | ✅ Language feature           | ❌ Not part of runtime            |
+| Event loop, microtask queue     | ❌ Not part of language       | ✅ Runtime mechanism              |
+| setTimeout, fetch, DOM events   | ❌ Not part of language       | ✅ Provided by runtime (Web APIs) |
+| Promise resolution and chaining | ✅ Language (ECMAScript spec) | ❌ Runtime just runs these        |

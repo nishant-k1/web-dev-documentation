@@ -1,0 +1,31 @@
+Redux Middleware
+__________
+    A redux middleware is just a function that returns another function.
+
+    The purpose of the middleware is to intercept an action before it reaches the reducer.
+
+    When user interacts with our application and lets say clicks on a button in our UI, the UI gets triggered to dispatch an action. However, instead of sending the action to the reducer like we normally would, we're going to send it to the middleware. That's why it's called a middleware, right. It sits in between dispatching of the aciton and the reducer.
+
+    Once the middleware gets the action object, it really has the freedom to do anything wants. So it can perform any extra logic. It can modify the action object itself. So lets say we if we wanted to we can change the aciton type, we can change the payload, we can add extra payload, we can remove the payload, we can also drop the aciton object so that it never makes it to the reducer. We've got lots of flexibility what we can do with middleware, the only thing that can't be done is changing the state itself and that's obvious because the reducer is ultimately responsible for managing and changing the state so the middleware can't do that. But for anythig else, like any logic you want to perform, the middleware is good to go.
+
+    A redux middleware can be used for many purposes such as logging (e.g. redux-logger), asynchronous API calls and so on.
+
+    UI ---> action object getting dispatched ---> Redux middleware intercepts action object --> Reducer
+
+    We can have multiple middlewares sitting between reducer and the dispatched action.
+
+    UI ---> action object getting dispatched ---> middleware1 ---> middleware2 ---> middleware3... --> Reducer
+
+    Redux Thunk
+    ____________ 
+        instead of just returning an action object, Redux thunk allows our action creators to return a function that receives the dispatch in its param and can perform side effects and can be async.
+        If we use the redux thunk middleware then the action creator does NOT return a plain action object like in classic Redux. Instead, it returns a thunk function (which is an async function taking dispatch as a parameter).
+        Redux Thunk middleware is a function that returns another function. This another function receives dispatch function in its parameter by default. 
+        Thunks are the standard approach for writing async logic in Redux apps, and are commonly used for data fetching. However, they can be used for a variety of tasks, and can contain both synchronous and asynchronous logic.
+
+    Redux Saga 
+    __________ 
+        An intuitive Redux side effect manager.
+
+
+            

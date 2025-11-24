@@ -1,0 +1,29 @@
+<input
+  type="text"
+  name="search"
+  placeholder="Type Something..."
+  class="search-input"
+/>
+
+<script>
+  const inputHandler = (event) => {
+    console.log(event.target.value);
+  };
+
+  // HOF
+  function withThrottle(eventHandler, delay) {
+    let throttled = false;
+    return function (event) {
+      if (!throttled) {
+        eventHandler(event);
+        throttled = true;
+        setTimeout(() => {
+          throttled = false;
+        }, delay);
+      }
+    };
+  }
+
+  const element = document.querySelector(".search-input");
+  element.addEventListener("input", withThrottle(inputHandler, 3000));
+</script>

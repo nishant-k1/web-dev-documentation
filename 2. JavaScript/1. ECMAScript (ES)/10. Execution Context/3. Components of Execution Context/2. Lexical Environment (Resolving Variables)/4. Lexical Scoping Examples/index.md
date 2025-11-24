@@ -1,0 +1,122 @@
+## Assume Function B is declared inside Function A
+
+1. Function B is declared inside Function A, and this creates a lexical relationship. Function B is "lexically scoped" to Function A.
+   Variables in Function A Accessible to Function B:
+
+2. Variables declared in Function A are accessible to Function B because Function B is declared inside Function A. This accessibility is due to lexical scoping and the creation of the scope chain during execution.
+
+3. At the time of Function B's declaration, it "remembers" the lexical environment of Function A (its parent scope). This includes the variables and references that are in Function A’s scope at the time of declaration.
+
+4. Execution Context and Scope Chain:
+   when Function A is invoked, its Execution Context (EC A) is created, which includes its own scope (local variables) and a reference to the outer scope (e.g., global scope if A is in the global context).
+
+   When Function B is invoked, its Execution Context (EC B) is created, and it builds its own scope chain by combining:
+
+   - Its own local variables.
+   - References to the scope of Function A (lexically inherited).
+
+5. Call Stack and Scope Chain Connection:
+
+The call stack manages the order of function calls, and the scope chain ensures variables are resolved correctly based on lexical scoping. Execution Context B does not "connect to" Execution Context A directly, but Function B can still access variables from Function A because its scope chain includes Function A’s variables.
+
+---
+
+1. Lexical Scope Accessibility at Declaration:
+
+   - Variables in Function A are accessible to Function B at the time of Function B's declaration because of lexical scoping.
+   - Function B’s access to Function A’s variables is not dependent on Function A’s invocation but is instead a result of how JavaScript’s scope chain works. This means:
+
+     - Function B "knows" about variables in Function A when Function B is defined.
+     - These variables are resolved at runtime when Function B is executed.
+
+2. Execution Context and Scope Chain:
+
+   - The scope chain is built dynamically when a function is executed, but it’s based on lexical scoping (the structure of the code).
+     Execution Context B does not directly "access" Execution Context A. Instead, Execution Context B’s scope chain includes a reference to Function A’s variables because Function B is lexically scoped within Function A.
+
+3. Misinterpretation of Variable Accessibility:
+
+   - Variables in Function A are not "inaccessible" to Function B at the time of declaration. Instead, Function B inherently "knows" about Function A’s variables due to lexical scoping.
+
+---
+
+1. Declaration Phase:
+
+   When Function B is declared inside Function A, Function B "remembers" Function A’s scope. This is lexical scoping: Function B’s scope includes its own variables, plus the variables of Function A (its parent).
+
+2. Invocation of Function A:
+
+   - When Function A is invoked, an execution context (EC A) is created.
+   - The scope chain for EC A is built, including:
+     - Local variables of Function A.
+     - A reference to the outer scope (e.g., global scope).
+
+3. Invocation of Function B:
+
+   - When Function B is invoked, an execution context (EC B) is created.
+   - The scope chain for EC B includes:
+     - Local variables of Function B.
+     - A reference to Function A’s scope (from the lexical scoping established at declaration).
+     - A reference to any outer scopes (e.g., global scope).
+
+4. Variable Resolution:
+
+   - When Function B tries to access a variable, it searches:
+     - Its own local variables.
+     - Variables in Function A (from the lexical environment).
+     - Variables in the outer/global scope.
+
+Corrected Statement:
+
+- Variables declared in Function A are accessible to Function B during both declaration and execution, thanks to lexical scoping. This is because Function B "remembers" the scope of Function A when it is declared.
+- During execution, Function B’s execution context dynamically resolves variables through the scope chain, which connects its own variables to those of Function A and beyond.
+
+## Assume Function B is declared inside Function A, now the variables declared inside A but outside B is accessible to Function B via Lexical Scoping, Lexical Scope of which Function A or B here?
+
+The variables inside Function A but outside Function B are accessible to Function B via the lexical scope of Function B.
+
+Here’s why:
+
+- Lexical scope refers to the scope that is determined by the position of the function declaration in the code, not by where the function is executed.
+- Function B's lexical scope includes: - Its own scope (variables declared inside B). - The scope of its parent (Function A in this case) and all other accessible outer scopes up to the global scope.
+
+In this situation:
+
+- Function A creates its own scope when declared and executed.
+- Function B, being declared inside Function A, is lexically scoped within Function A's scope.
+- This means that the lexical scope of Function B includes Function A's scope.
+
+```Javascript
+
+function A() {
+  let a = 'Variable in A';
+
+  function B() {
+    console.log(a); // Accesses `a` from A's scope
+  }
+
+  B();
+}
+
+A();
+```
+
+Breakdown:
+
+1. Lexical Scope of B:
+   B has access to:
+
+   - Variables declared inside B.
+   - Variables from its parent scope (A).
+   - Variables from any outer/global scopes.
+
+2. Lexical Scope of A:
+   A has access to:
+
+   - Variables declared inside A.
+   - Variables from any outer/global scopes.
+   - A does not inherently include B's variables in its lexical scope (because the parent scope cannot see the child's scope).
+
+Key Takeaway:
+
+The lexical scope of Function B determines its ability to access variables from Function A. Function A's lexical scope does not "directly" influence this; rather, Function B’s lexical scope is defined by the fact that it was declared inside Function A.
