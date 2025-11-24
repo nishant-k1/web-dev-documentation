@@ -8,7 +8,6 @@ import rehypeHighlight from 'rehype-highlight';
 import rehypeRaw from 'rehype-raw';
 import rehypeSanitize from 'rehype-sanitize';
 import rehypeStringify from 'rehype-stringify';
-import { unified } from 'unified';
 
 const postsDirectory = path.join(process.cwd(), '.');
 
@@ -82,8 +81,7 @@ export function getPostBySlug(slug: string[]): PostMetadata | null {
 }
 
 export async function markdownToHtml(markdown: string): Promise<string> {
-  const processor = unified()
-    .use(remark)
+  const processor = remark()
     .use(remarkGfm)
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeRaw)
@@ -100,6 +98,7 @@ export function getDirectoryStructure(): DirectoryNode {
     name: 'root',
     type: 'directory',
     children: [],
+    files: [],
     path: [],
   };
   
@@ -108,6 +107,7 @@ export function getDirectoryStructure(): DirectoryNode {
       name: path.basename(dir) || 'root',
       type: 'directory',
       children: [],
+      files: [],
       path: parentPath,
     };
     

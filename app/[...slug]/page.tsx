@@ -23,7 +23,7 @@ export default async function PostPage({ params }: PageProps) {
   const htmlContent = await markdownToHtml(post.content)
 
   return (
-    <article className="prose prose-slate dark:prose-invert max-w-none">
+    <article className="max-w-none">
       <header className="mb-8 pb-4 border-b border-gray-200 dark:border-gray-700">
         <h1 className="text-4xl font-bold mb-2">{post.title}</h1>
         <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
