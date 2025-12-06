@@ -53,7 +53,7 @@ In the above example let and const declared in the global scope are not added to
      - **Re-declaration**: Re-declarable within the `same scope`
      - **Re-assignment**: Re-assignable
      - **Mutability**: `Reference type mutable` (can modify object properties)
-     - **Hoisting**: `Hoisted` and automatically initialized with `undefined` value
+     - **Hoisting**: `Hoisted` and automatically initialized with `undefined` value. hoists to function scope (or global)
      - **Access Before Declaration**: Returns `undefined` if accessed before the declaration (because of hoisting and undefined value initialization)
      - **Use Cases**: Generally avoided in modern JavaScript due to its function-scoping and hoisting behavior; prefer `let` and `const` for clearer scope management
 
@@ -65,7 +65,7 @@ In the above example let and const declared in the global scope are not added to
      - **Re-declaration**: Not re-declarable within the `same block scope`
      - **Re-assignment**: Re-assignable
      - **Mutability**: `Reference type mutable` (can modify object properties)
-     - **Hoisting**: `Hoisted` but not initialized (`Temporal Dead Zone`); accessing before initialization results in a `ReferenceError`,
+     - **Hoisting**: `Hoisted` but not initialized (`Temporal Dead Zone`); accessing before initialization results in a `ReferenceError`. hoists to block scope ({})
      - **Access Before Declaration**: Throws a `ReferenceError` if accessed before the declaration
      - **Use Cases**: Preferred for variables that need to be reassigned, offering better block-level scoping than `var`
 
@@ -77,7 +77,7 @@ In the above example let and const declared in the global scope are not added to
      - **Re-declaration**: Not re-declarable within the `same block scope`
      - **Re-assignment**: Not re-assignable (variable binding is immutable). Error you will get: `TypeError: Assignment to constant variable`
      - **Mutability**: `Reference type mutable` (can modify object properties, but not the binding itself)
-     - **Hoisting**: `Hoisted` but not initialized (`Temporal Dead Zon`e); accessing before initialization results in a `ReferenceError`
+     - **Hoisting**: `Hoisted` but not initialized (`Temporal Dead Zon`e); accessing before initialization results in a `ReferenceError`. Hoists to block scope ({})
      - **Access Before Declaration**: Throws a `ReferenceError` if accessed before the declaration
      - **Use Cases**: Ideal for variables that should not be reassigned, ensuring immutability of the binding
 
