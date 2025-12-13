@@ -19,12 +19,14 @@ Understanding authentication and authorization - how users are verified and what
 **"Who are you?"** - Verifies user identity.
 
 **Process:**
+
 1. User provides credentials (email/password)
 2. Server verifies credentials
 3. If valid → User authenticated
 4. Server issues token/session
 
 **Example:**
+
 - User logs in with email/password
 - Server checks if credentials match database
 - If match → User authenticated
@@ -36,6 +38,7 @@ Understanding authentication and authorization - how users are verified and what
 **"What can you do?"** - Determines user permissions.
 
 **Process:**
+
 1. User makes request
 2. Server checks if user is authenticated
 3. Server checks user's role/permissions
@@ -43,6 +46,7 @@ Understanding authentication and authorization - how users are verified and what
 5. If not authorized → Request denied (403)
 
 **Example:**
+
 - User tries to access admin panel
 - Server checks: Is user admin?
 - If admin → Access granted
@@ -52,50 +56,50 @@ Understanding authentication and authorization - how users are verified and what
 
 ## Key Difference
 
-| Aspect | Authentication | Authorization |
-|--------|----------------|---------------|
-| **Question** | "Who are you?" | "What can you do?" |
-| **When** | Login time | Every request |
-| **Checks** | Credentials | Permissions/Role |
-| **Result** | Token/Session issued | Access granted/denied |
+| Aspect       | Authentication       | Authorization         |
+| ------------ | -------------------- | --------------------- |
+| **Question** | "Who are you?"       | "What can you do?"    |
+| **When**     | Login time           | Every request         |
+| **Checks**   | Credentials          | Permissions/Role      |
+| **Result**   | Token/Session issued | Access granted/denied |
 
 ---
 
 ## Topics
 
-### 1. [JWT Authentication Workflow](./1.%20JWT%20Authentication%20Workflow.md)
+### 1. [JWT Authentication Workflow](./01.%20JWT%20Authentication%20Workflow.md)
 
 Complete JWT authentication workflow - how JWT works, why it's stateless, secret key, signing, and verification. Step-by-step explanation.
 
-### 2. [Session-Based Authentication](./2.%20Session-Based%20Authentication.md)
+### 2. [Session-Based Authentication](./02.%20Session-Based%20Authentication.md)
 
 Session-based (cookie-based) authentication workflow - how sessions work, why they're stateful, session storage, and cookie handling.
 
-### 3. [JWT vs Session-Based](./3.%20JWT%20vs%20Session-Based.md)
+### 3. [JWT vs Session-Based](./03.%20JWT%20vs%20Session-Based.md)
 
 Detailed comparison of JWT and session-based authentication - when to use each, security differences, scalability, and performance.
 
-### 4. [Protected Routes](./4.%20Protected%20Routes.md)
+### 4. [Protected Routes](./04.%20Protected%20Routes.md)
 
 Understanding protected routes, public routes, and private routes. How authentication/authorization controls route access on frontend and backend.
 
-### 5. [Refresh Tokens](./5.%20Refresh%20Tokens.md)
+### 5. [Refresh Tokens](./05.%20Refresh%20Tokens.md)
 
 Complete refresh token workflow - access token + refresh token pattern, token rotation, automatic refresh, and secure storage. Essential for production applications.
 
-### 6. [Password Security](./6.%20Password%20Security.md)
+### 6. [Password Security](./06.%20Password%20Security.md)
 
 Password hashing with bcrypt, salting, password strength validation, and security best practices. Critical for secure authentication.
 
-### 7. [Role-Based Access Control (RBAC)](./7.%20Role-Based%20Access%20Control%20(RBAC).md)
+### 7. [Role-Based Access Control (RBAC)](<./07.%20Role-Based%20Access%20Control%20(RBAC).md>)
 
 RBAC implementation - roles, permissions, role-based middleware, permission checks, and resource ownership. Essential for multi-role applications.
 
-### 8. [Security Best Practices](./8.%20Security%20Best%20Practices.md)
+### 8. [Security Best Practices](./08.%20Security%20Best%20Practices.md)
 
 Comprehensive security guide - token storage, XSS/CSRF protection, rate limiting, HTTPS enforcement, input validation, and security headers. Critical for production security.
 
-### 9. [Token Expiration and Refresh Flow](./9.%20Token%20Expiration%20and%20Refresh%20Flow.md)
+### 9. [Token Expiration and Refresh Flow](./09.%20Token%20Expiration%20and%20Refresh%20Flow.md)
 
 Complete token lifecycle management - detecting expired tokens, automatic refresh, proactive refresh, error handling, and request queuing. Essential for seamless user experience.
 
@@ -107,7 +111,7 @@ Comprehensive overview of authentication vs authorization concepts, workflows, a
 
 Complete OAuth 2.0 implementation - social login with Google, GitHub, Microsoft, OAuth flow, authorization code exchange, and frontend integration. Essential for modern applications.
 
-### 12. [Multi-Factor Authentication (MFA)](./12.%20Multi-Factor%20Authentication%20(MFA).md)
+### 12. [Multi-Factor Authentication (MFA)](<./12.%20Multi-Factor%20Authentication%20(MFA).md>)
 
 Multi-factor authentication implementation - TOTP (Google Authenticator), SMS 2FA, Email 2FA, backup codes, MFA setup, and verification flow. Critical for enterprise security.
 
@@ -145,11 +149,11 @@ Complete comparison of client-side vs server-side route protection - frontend ro
 
 ### Authentication Methods
 
-| Method | Type | Storage | Stateless? |
-|--------|------|---------|-----------|
-| **JWT** | Token-based | Client (localStorage/cookie) | ✅ Yes |
-| **Session** | Cookie-based | Server (memory/database) | ❌ No |
-| **Basic Auth** | Header-based | N/A | ✅ Yes |
+| Method         | Type         | Storage                      | Stateless? |
+| -------------- | ------------ | ---------------------------- | ---------- |
+| **JWT**        | Token-based  | Client (localStorage/cookie) | ✅ Yes     |
+| **Session**    | Cookie-based | Server (memory/database)     | ❌ No      |
+| **Basic Auth** | Header-based | N/A                          | ✅ Yes     |
 
 ---
 
@@ -158,6 +162,7 @@ Complete comparison of client-side vs server-side route protection - frontend ro
 ### Q: What's the difference between authentication and authorization?
 
 **A:**
+
 - **Authentication** - "Who are you?" (login, verify identity)
 - **Authorization** - "What can you do?" (permissions, access control)
 
@@ -173,9 +178,9 @@ Complete comparison of client-side vs server-side route protection - frontend ro
 
 ## Related Topics
 
-- [HTTP Authentication](../1.%20HTTP/8.%20Authentication.md) - HTTP-level authentication methods
-- [HTTP Status Codes](../1.%20HTTP/3.%20HTTP%20Status%20Codes.md) - 401 Unauthorized, 403 Forbidden
-- [Error Handling](../1.%20HTTP/7.%20Error%20Handling.md) - Handling auth errors
+- [HTTP Authentication](../01.%20HTTP/08.%20Authentication.md) - HTTP-level authentication methods
+- [HTTP Status Codes](../01.%20HTTP/03.%20HTTP%20Status%20Codes.md) - 401 Unauthorized, 403 Forbidden
+- [Error Handling](../01.%20HTTP/07.%20Error%20Handling.md) - Handling auth errors
 - [Browser Security](../../19.%20Browser%20Internals/9.%20Browser%20Security.md) - Security mechanisms
 
 ---
@@ -183,11 +188,13 @@ Complete comparison of client-side vs server-side route protection - frontend ro
 ## Summary
 
 **Authentication:**
+
 - Verifies who you are
 - Happens at login
 - Issues token/session
 
 **Authorization:**
+
 - Determines what you can do
 - Happens on every request
 - Checks permissions/role
@@ -201,6 +208,7 @@ Complete comparison of client-side vs server-side route protection - frontend ro
 This Authentication & Authorization documentation covers all essential concepts for:
 
 ✅ **Frontend Development Interviews**
+
 - JWT vs Session-based authentication
 - Authentication vs Authorization
 - Password security (hashing, bcrypt)
@@ -216,6 +224,7 @@ This Authentication & Authorization documentation covers all essential concepts 
 - Email verification
 
 ✅ **Real-World Enterprise Development**
+
 - Complete authentication workflows
 - Production-ready patterns
 - Comprehensive security best practices
@@ -230,6 +239,7 @@ This Authentication & Authorization documentation covers all essential concepts 
 - Email verification
 
 **Topics Covered:**
+
 1. ✅ JWT Authentication Workflow
 2. ✅ Session-Based Authentication
 3. ✅ JWT vs Session-Based Comparison
@@ -251,6 +261,7 @@ This Authentication & Authorization documentation covers all essential concepts 
 19. ✅ Route Protection on client side vs server side
 
 **You're fully prepared for:**
+
 - ✅ All authentication interview questions
 - ✅ All authorization interview questions
 - ✅ All security-related questions

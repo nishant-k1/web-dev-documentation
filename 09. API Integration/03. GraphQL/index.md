@@ -8,6 +8,8 @@ Understanding GraphQL - queries, mutations, subscriptions, Apollo Client, cachin
 
 ### 1. [Apollo Client](./1.%20Apollo%20Client.md)
 
+### 2. [Strap+GraphQL](./Strap+GraphQL.md)
+
 Complete guide to Apollo Client - setup, queries, mutations, caching, error policies, and React integration.
 
 ---

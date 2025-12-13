@@ -28,7 +28,7 @@ Managing multiple API requests - parallel requests with Promise.all, sequential 
 
 Real-time communication with WebSockets - WebSocket API, connection management, message handling, reconnection strategies, and React integration.
 
-### 5. [Server-Sent Events (SSE)](./5.%20Server-Sent%20Events%20(SSE).md)
+### 5. [Server-Sent Events (SSE)](<./5.%20Server-Sent%20Events%20(SSE).md>)
 
 One-way real-time communication with SSE - EventSource API, server implementation, reconnection, and when to use SSE vs WebSockets.
 
@@ -42,22 +42,22 @@ Long polling technique - how it works, implementation, use cases, and comparison
 
 ### When to Use Each Technique
 
-| Technique | Use Case | Example |
-|-----------|----------|---------|
-| **Debounce** | Search input, form validation | Wait 300ms after user stops typing |
-| **Throttle** | Scroll events, resize events | Execute at most once per 100ms |
-| **Pagination** | Large datasets | Load 20 items per page |
-| **Infinite Scroll** | Social feeds, product lists | Load more on scroll |
-| **WebSockets** | Real-time chat, live updates | Bidirectional communication |
-| **SSE** | Live notifications, updates | Server → Client only |
-| **Long Polling** | Fallback for WebSockets | Keep connection open |
+| Technique           | Use Case                      | Example                            |
+| ------------------- | ----------------------------- | ---------------------------------- |
+| **Debounce**        | Search input, form validation | Wait 300ms after user stops typing |
+| **Throttle**        | Scroll events, resize events  | Execute at most once per 100ms     |
+| **Pagination**      | Large datasets                | Load 20 items per page             |
+| **Infinite Scroll** | Social feeds, product lists   | Load more on scroll                |
+| **WebSockets**      | Real-time chat, live updates  | Bidirectional communication        |
+| **SSE**             | Live notifications, updates   | Server → Client only               |
+| **Long Polling**    | Fallback for WebSockets       | Keep connection open               |
 
 ---
 
 ## Related Topics
 
-- [HTTP Clients](../1.%20HTTP/http%20clients.md) - Fetch API, Axios
-- [Request Cancellation](../1.%20HTTP/12.%20Request%20Cancellation%20and%20Timeouts.md) - AbortController
+- [HTTP Clients](../01.%20HTTP/13.%20HTTP%20Clients.md) - Fetch API, Axios
+- [Request Cancellation](../01.%20HTTP/11.%20Request%20Cancellation%20and%20Timeouts.md) - AbortController
 - [Performance Optimization](../8.%20Performance%20Optimization/index.md) - API performance
 
 ---
@@ -65,6 +65,7 @@ Long polling technique - how it works, implementation, use cases, and comparison
 ## Summary
 
 **Client-Side Integration Techniques:**
+
 - Debouncing & throttling (prevent excessive requests)
 - Pagination (handle large datasets)
 - Parallel & sequential requests (manage multiple APIs)
@@ -73,8 +74,8 @@ Long polling technique - how it works, implementation, use cases, and comparison
 - Long polling (fallback technique)
 
 **Key Benefits:**
+
 - ✅ Better performance
 - ✅ Reduced server load
 - ✅ Better user experience
 - ✅ Real-time capabilities
-
