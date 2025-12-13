@@ -92,23 +92,23 @@ This document provides an overview of operations that apply to primitive data ty
 
 ### 1. Initialization
 
-📖 See: [11. Initializations](../../11.%20Initializations/)
+📖 See: [12. Initializations](../../12.%20Initializations/)
 
 ### 2. Assignment
 
-📖 See: [12. Assignments](../../12.%20Assignments/)
+📖 See: [13. Assignments](../../13.%20Assignments/)
 
 ### 3. Operators
 
-📖 See: [10. Operators](../../10.%20Operators/)
+📖 See: [11. Operators](../../11.%20Operators/)
 
 ### 4. Comparing
 
-📖 See: [13. Comparing - Comparing Primitives](../../13.%20Comparing/02.%20Comparing%20Primitives.md)
+📖 See: [14. Comparing - Comparing Primitives](../../14.%20Comparing/02.%20Comparing%20Primitives.md)
 
 ### 5. Copying
 
-📖 See: [14. Copying - Copying Primitives](../../14.%20Copying/02.%20Copying%20Primitives.md)
+📖 See: [15. Copying - Copying Primitives](../../15.%20Copying/02.%20Copying%20Primitives.md)
 
 ## Key Characteristics
 
@@ -137,35 +137,35 @@ This document provides an overview of operations that apply to non-primitive (re
 
 ### 1. Initialization
 
-📖 See: [11. Initializations](../../11.%20Initializations/)
+📖 See: [12. Initializations](../../12.%20Initializations/)
 
 ### 2. Assignment
 
-📖 See: [12. Assignments](../../12.%20Assignments/)
+📖 See: [13. Assignments](../../13.%20Assignments/)
 
 ### 3. Operators
 
-📖 See: [10. Operators](../../10.%20Operators/)
+📖 See: [11. Operators](../../11.%20Operators/)
 
 ### 4. Comparing
 
 📖 See:
 
-- [13. Comparing - Reference Comparison](../../13.%20Comparing/03.%20Reference%20Comparison.md)
-- [13. Comparing - Shallow Comparison](../../13.%20Comparing/04.%20Shallow%20Comparison.md)
-- [13. Comparing - Deep Comparison](../../13.%20Comparing/05.%20Deep%20Comparison.md)
+- [14. Comparing - Reference Comparison](../../14.%20Comparing/03.%20Reference%20Comparison.md)
+- [14. Comparing - Shallow Comparison](../../14.%20Comparing/04.%20Shallow%20Comparison.md)
+- [14. Comparing - Deep Comparison](../../14.%20Comparing/05.%20Deep%20Comparison.md)
 
 ### 5. Copying
 
 📖 See:
 
-- [14. Copying - Reference Copy](../../14.%20Copying/03.%20Reference%20Copy.md)
-- [14. Copying - Shallow Copy](../../14.%20Copying/04.%20Shallow%20Copy.md)
-- [14. Copying - Deep Copy](../../14.%20Copying/05.%20Deep%20Copy.md)
+- [15. Copying - Reference Copy](../../15.%20Copying/03.%20Reference%20Copy.md)
+- [15. Copying - Shallow Copy](../../15.%20Copying/04.%20Shallow%20Copy.md)
+- [15. Copying - Deep Copy](../../15.%20Copying/05.%20Deep%20Copy.md)
 
 ### 6. Mutation ⭐
 
-📖 See: [15. Mutation](../../15.%20Mutation/) - Comprehensive guide
+📖 See: [16. Mutation](../../16.%20Mutation/) - Comprehensive guide
 
 ## Key Characteristics
 
@@ -179,7 +179,7 @@ This document provides an overview of operations that apply to non-primitive (re
 
 - **Mutation:** Changing contents without changing reference
 - **Re-assignment:** Changing reference to point to different object
-- See [15. Mutation](../../15.%20Mutation/) for details
+- See [16. Mutation](../../16.%20Mutation/) for details
 ```
 
 ---
