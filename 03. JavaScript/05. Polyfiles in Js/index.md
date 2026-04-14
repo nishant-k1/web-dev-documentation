@@ -1,5 +1,7 @@
 # Polyfill in Js
 
+- Polyfills in JavaScript are neither ECMAScript nor JRE—they sit in a different category altogether.
+- Polyfills = implementation of ECMAScript features (when missing)
 - In JavaScript, a polyfill is essentially a piece of code that provides modern functionality on older browsers that do not support it natively.
 - It basically "fills in" the gap for missing features. For example, if a new JavaScript method isn't supported in an older browser, a polyfill would implement that method so that the code works as intended.
 - A polyfill is a custom implementation of a JavaScript feature that already exists in modern JS, written so that older environments can use it.
